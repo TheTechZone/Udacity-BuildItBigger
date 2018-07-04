@@ -17,16 +17,8 @@ public abstract class AbstractMainActivity extends AppCompatActivity {
         mContext = context;
     }
 
-    protected void goToNextActivity(){
-        final Intent intent = new Intent(mContext, TellJokeActivity.class);
-        startActivity(intent);
-    }
-
     public void tellJoke(View view) {
-        goToNextActivity();
-        Toast.makeText(this, "derp, version: "
-                        + (BuildConfig.FLAVOR.equals("free") ? "peasant" : "sugar daddy")
-                , Toast.LENGTH_SHORT).show();
+        new JokeEndpointTask().execute(mContext);
     }
 
     public static void initBannerAd(View root){

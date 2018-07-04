@@ -2,10 +2,10 @@ package com.udacity.gradle.builditbigger;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.util.Pair;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import com.example.joketellerlibrary.TellJokeActivity;
 import com.google.android.gms.ads.AdListener;
@@ -18,7 +18,7 @@ public abstract class AbstractMainActivity extends AppCompatActivity {
     private InterstitialAd mInterstitialAd;
 
     Context mContext;
-
+    private String joke;
 
     protected void initAd(final Context context){
         mContext = context;
@@ -28,6 +28,8 @@ public abstract class AbstractMainActivity extends AppCompatActivity {
         mInterstitialAd = new InterstitialAd(this);
         mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
         mInterstitialAd.loadAd(new AdRequest.Builder().addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build());
+
+
 
         if(mInterstitialAd != null)
             mInterstitialAd.setAdListener(new AdListener() {
@@ -41,15 +43,12 @@ public abstract class AbstractMainActivity extends AppCompatActivity {
                     // Proceed to the next activity.
                     mInterstitialAd.loadAd(new AdRequest.Builder().build());
                     Log.i("Ads", "onAdClosed");
-                    goToNextActivity();
+                    JokeEndpointTask task = new JokeEndpointTask();
+                    task.execute(mContext);
                 }
             });
     }
 
-    protected void goToNextActivity(){
-        final Intent intent = new Intent(mContext, TellJokeActivity.class);
-        startActivity(intent);
-    }
 
     public void tellJoke(View view) {
         if(mInterstitialAd.isLoaded()){

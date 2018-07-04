@@ -66,3 +66,13 @@ dependencies {
     implementation project(':joketellerlibrary')
 
 }
+
+task startTesting(dependsOn: [
+        ":backend:appengineRun",
+        ":app:connectedAndroidTest",
+        ":backend:appengineStop"
+]){
+    doLast {
+        println 'server started and stopped'
+    }
+}
